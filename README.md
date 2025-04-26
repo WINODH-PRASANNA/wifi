@@ -8,18 +8,6 @@
 A lightweight Python utility that continuously monitors your network connection speed and battery level, sending real-time desktop alerts when thresholds are breached.  
 It runs automatically every 5 minutes in the background and helps you stay aware of poor network conditions or low battery levels!
 
----
-
-## Table of Contents 📋
-- [Features](#features-)
-- [Installation](#installation-)
-- [Usage](#usage-)
-- [Requirements](#requirements-)
-- [Troubleshooting](#troubleshooting-)
-- [License](#license-)
-
----
-
 ## Features ✨
 
 ### 📶 Network Monitoring
