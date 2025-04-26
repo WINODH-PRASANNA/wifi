@@ -49,7 +49,6 @@ pip install -r requirements.txt
 
 ### Alternatively, install dependencies direction
 ```bash
-# terminal
 pip install speedtest-cli psutil plyer
 ```
 ## Usage 🚀
