@@ -1,55 +1,58 @@
-import psutil
-import socket
-import time
 import speedtest
+import psutil
+import requests
+import time
 from plyer import notification
 
-def is_connected_to_wifi():
-    wifi_info = psutil.net_if_addrs()
-    # Check for WiFi interface and whether it's connected
-    for interface, addrs in wifi_info.items():
-        if 'Wi-Fi' in interface:  # You might need to change 'Wi-Fi' depending on your system
-            for addr in addrs:
-                if addr.family == 2:  # IPv4 address
-                    return True
-    return False
+def check_network_speed():
+    """Check download and upload speed in Mbps"""
+    st = speedtest.Speedtest()
+    st.download()  # Perform download test
+    st.upload()    # Perform upload test
+    results = st.results.dict()
+    download_speed = results['download'] / 1_000_000  # Convert to Mbps
+    upload_speed = results['upload'] / 1_000_000      # Convert to Mbps
+    return download_speed, upload_speed
 
-def get_network_speed():
-    try:
-        st = speedtest.Speedtest()
-        download_speed = st.download() / 1_000_000  # Convert bits to Megabits (Mbps)
-        return round(download_speed, 2)
-    except Exception:
-        return 0
-
-def check_and_notify():
+def check_battery_level():
+    """Check current battery percentage"""
     battery = psutil.sensors_battery()
-    if battery:
-        percent = battery.percent
-        wifi_connected = is_connected_to_wifi()
-        speed = get_network_speed()
+    if battery is None:
+        raise Exception("Battery information not available")
+    return battery.percent, battery.power_plugged
 
-        if wifi_connected:
-            if percent < 30:
-                notification.notify(
-                    title="⚡ Low Battery + WiFi Connected",
-                    message=f"Battery is {percent}%. Please charge your device!",
-                    timeout=10
-                )
-            if speed < 2:  # Example: consider less than 2 Mbps as slow
-                notification.notify(
-                    title="🐢 Slow Internet Alert",
-                    message=f"Download Speed is {speed} Mbps. Check your WiFi connection!",
-                    timeout=10
-                )
-        else:
-            notification.notify(
-                title="❌ No WiFi Connection",
-                message="WiFi is not connected. Please check your network!",
-                timeout=10
-            )
+def send_alert(message):
+    """Send alert via desktop notification"""
+    notification.notify(
+        title="System Alert",
+        message=message,
+        timeout=10
+    )
+    print(f"Alert sent: {message}")
 
-if __name__ == "__main__":
+def monitor_system():
+    """Main monitoring function"""
+    try:
+        # Check network speed
+        download_speed, upload_speed = check_network_speed()
+        print(f"Download: {download_speed:.2f} Mbps, Upload: {upload_speed:.2f} Mbps")
+        
+        # Check battery
+        battery_percent, is_charging = check_battery_level()
+        print(f"Battery: {battery_percent}%", "Charging" if is_charging else "Discharging")
+        
+        # Check conditions and send alerts
+        if download_speed < 1:
+            send_alert(f"Low network speed: {download_speed:.2f} Mbps (below 1 Mbps)")
+        
+        if battery_percent < 30 and not is_charging:
+            send_alert(f"Low battery: {battery_percent}% (below 30%)")
+            
+    except Exception as e:
+        print(f"Error occurred: {e}")
+
+if _name_ == "_main_":
+    # Run monitoring every 5 minutes (300 seconds)
     while True:
-        check_and_notify()
-        time.sleep(60)  # Wait 1 minute
+        monitor_system()
+        time.sleep(300)  # Wait for 5 minutes before checking again
