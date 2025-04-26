@@ -1,38 +1,47 @@
+# Network Speed & Battery Monitor 🔌📶
 
-# WiFi and Battery Alert System 🔋📶
+![Python Version](https://img.shields.io/badge/python-3.6%2B-blue)
+![Dependencies](https://img.shields.io/badge/dependencies-3-green)
+![License](https://img.shields.io/badge/license-MIT-brightgreen)
 
-This is a **Python backend application** that monitors your device's **battery level**, **WiFi connection**, and **internet speed**. It sends real-time **notifications** every 1 minute if any issue is detected.
+A lightweight Python utility that continuously monitors your network connection speed and battery level, sending desktop alerts when thresholds are breached.
+
+## Table of Contents 📋
+- [Features](#features-)
+- [Installation](#installation-)
+- [Usage](#usage-)
+- [Configuration](#configuration-)
+- [Requirements](#requirements-)
+- [Troubleshooting](#troubleshooting-)
+- [License](#license-)
 
 ## Features ✨
-- Alerts when **battery level** drops below 30%.
-- Alerts if **internet connection** is lost or WiFi is disconnected.
-- Alerts if **download speed** falls below 2 Mbps while connected to WiFi.
-- Runs automatically **every 1 minute**.
-- Lightweight and runs in the background.
+- *Network Monitoring*:
+  - Real-time download/upload speed measurement
+  - Automatic speed test every 5 minutes
+  - Alert when speed < 1 Mbps
+- *Battery Monitoring*:
+  - Continuous battery percentage tracking
+  - Charging status detection
+  - Alert when battery < 30% and not charging
+- *Notification System*:
+  - Cross-platform desktop notifications
+  - Clear alert messages with thresholds
+- *Lightweight*:
+  - Low system resource usage
+  - Runs in background
 
-## Requirements ⚙️
-- Python 3.x
-- Install required packages:
-  ```bash
-  pip install psutil plyer speedtest-cli
-  ```
+## Installation ⚙
 
-## How to Run 🚀
-1. Clone the repository or download the script.
-2. Navigate to the project folder in your terminal.
-3. Run the script:
-   ```bash
-   python wifi_battery_alert.py
-   ```
+### Prerequisites
+- Python 3.6 or higher
+- pip package manager
 
-## Project Type 📚
-- **Backend application**
-- No frontend interface (runs silently in the background).
+### Steps
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/network-battery-monitor.git
+cd network-battery-monitor
 
-## Libraries Used 📦
-- [`psutil`](https://pypi.org/project/psutil/) – for battery status and network information.
-- [`plyer`](https://pypi.org/project/plyer/) – for sending notifications.
-- [`speedtest-cli`](https://pypi.org/project/speedtest-cli/) – for checking internet speed.
-
-## License 📝
-This project is open-source and free to use.
+# Install dependencies
+pip install -r requirements.txt
